@@ -2,9 +2,14 @@ require('dotenv').config();
 
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+const express = require('express');
+const { Client, Collection, GatewayIntentBits } = require('discord.js');
 
-// Create a new client instance
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.get('/', (req, res) => res.send('Bot is running!'));
+
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 client.commands = new Collection();
@@ -18,7 +23,6 @@ for (const folder of commandFolders) {
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
 		const command = require(filePath);
-		// Set a new item in the Collection with the key as the command name and the value as the exported module
 		if ('data' in command && 'execute' in command) {
 			client.commands.set(command.data.name, command);
 		} else {
@@ -40,5 +44,10 @@ for (const file of eventFiles) {
 	}
 }
 
-// Log in to Discord with your client's token
-client.login(process.env.CLIENT_TOKEN);
+client.login(process.env.CLIENT_TOKEN).catch(error => {
+    console.error('Failed to login:', error);
+});
+
+app.listen(port, () => {
+    console.log(`App listening at http://localhost:${port}`);
+});

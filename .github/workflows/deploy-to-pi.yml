@@ -1,0 +1,16 @@
+name: Deploy to Raspberry Pi
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  deploy:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Print message
+      run: echo "✅ This is a test. Workflow triggered by merged PR to main."

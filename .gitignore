@@ -136,4 +136,5 @@ deploy.sh
 
 # prisma
 dev.db
+prod.db
 *.db-journal

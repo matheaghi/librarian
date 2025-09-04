@@ -132,3 +132,9 @@ dist
 
 # deployment script
 deploy.sh
+/generated/prisma
+
+# prisma
+dev.db
+prod.db
+*.db-journal

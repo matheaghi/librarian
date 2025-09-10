@@ -25,7 +25,8 @@ for (const folder of commandFolders) {
 		const command = require(filePath);
 		if ('data' in command && 'execute' in command) {
 			client.commands.set(command.data.name, command);
-		} else {
+		}
+		else {
 			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
 		}
 	}
@@ -39,15 +40,16 @@ for (const file of eventFiles) {
 	const event = require(filePath);
 	if (event.once) {
 		client.once(event.name, (...args) => event.execute(...args));
-	} else {
+	}
+	else {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
 
 client.login(process.env.CLIENT_TOKEN).catch(error => {
-    console.error('Failed to login:', error);
+	console.error('Failed to login:', error);
 });
 
 app.listen(port, () => {
-    console.log(`App listening at http://localhost:${port}`);
+	console.log(`App listening at http://localhost:${port}`);
 });

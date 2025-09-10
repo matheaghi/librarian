@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "prepare": "husky",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint": "eslint . --cache --max-warnings=0",
+    "lint:fix": "eslint . --fix --cache"
   },
   "author": "",
   "license": "ISC",

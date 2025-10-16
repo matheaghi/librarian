@@ -1,9 +1,11 @@
-const { SlashCommandBuilder } = require('discord.js');
-const { PrismaClient } = require('@prisma/client');
+import { SlashCommandBuilder, type ChatInputCommandInteraction } from 'discord.js';
+import type { SlashCommand } from '../../types/command.js';
+import { PrismaClient } from '@prisma/client';
+
 const prisma = new PrismaClient();
 
 
-module.exports = {
+export const command: SlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName('hug')
 		.setDescription('Send a hug to another user')
@@ -12,12 +14,13 @@ module.exports = {
 				.setDescription('The user to hug')
 				.setRequired(true),
 		),
-	async execute(interaction) {
-		const hugged = interaction.options.getUser('user');
+	async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+		const hugged = interaction.options.getUser('user', true);
 		const hugger = interaction.user;
 
 		if (hugged.id === hugger.id) {
-			return interaction.reply({ content: 'You can\'t hug yourself... but here\'s a virtual hug anyway 🤗', flags: 64 });
+			await interaction.reply({ content: 'You can\'t hug yourself... but here\'s a virtual hug anyway 🤗', ephemeral: true });
+			return;
 		}
 
 		// Upsert hug count
@@ -31,3 +34,5 @@ module.exports = {
 
 	},
 };
+
+export default command;

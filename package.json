@@ -4,11 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "dev": "tsx src/index.ts",
+    "start": "tsx src/index.ts",          
+    "deploy": "tsx deploy-commands.ts",  
+    "typecheck": "tsc --noEmit",
     "prepare": "husky",
-    "lint": "eslint . --cache --max-warnings=0",
-    "lint:fix": "eslint . --fix --cache"
-  },
+    "lint": "eslint . --ext .js,.ts --cache --max-warnings=0",
+    "lint:fix": "eslint . --ext .js,.ts --fix --cache"
+  }
+  ,
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -20,10 +24,18 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.6.0",
+    "@typescript-eslint/eslint-plugin": "^8.45.0",
+    "@typescript-eslint/parser": "^8.45.0",
     "eslint": "^9.35.0",
+    "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.6",
-    "prisma": "^6.12.0"
+    "prisma": "^6.12.0",
+    "tsup": "^8.5.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.2"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

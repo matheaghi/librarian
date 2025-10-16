@@ -1,11 +1,14 @@
+// eslint.config.js
 const js = require('@eslint/js');
+const tsPlugin = require('@typescript-eslint/eslint-plugin');
+const tsParser = require('@typescript-eslint/parser');
 
 module.exports = [
 	js.configs.recommended,
+
+	// Shared rules
 	{
-		languageOptions: {
-			ecmaVersion: 'latest',
-		},
+		languageOptions: { ecmaVersion: 'latest' },
 		rules: {
 			'arrow-spacing': ['warn', { before: true, after: true }],
 			'brace-style': ['error', 'stroustrup', { allowSingleLine: true }],
@@ -45,6 +48,52 @@ module.exports = [
 			'space-unary-ops': 'error',
 			'spaced-comment': 'error',
 			yoda: 'error',
+		},
+	},
+
+	// TypeScript files
+	{
+		files: ['**/*.ts', '**/*.tsx', '**/*.d.ts'],
+		languageOptions: {
+			parser: tsParser,
+			parserOptions: {
+				project: ['./tsconfig.json'],
+				tsconfigRootDir: __dirname,
+			},
+		},
+		plugins: { '@typescript-eslint': tsPlugin },
+		rules: {
+			// disable core rules that conflict with TS versions
+			'no-shadow': 'off',
+			'no-empty-function': 'off',
+			'no-unused-vars': 'off',
+
+			'@typescript-eslint/no-shadow': ['error', { allow: ['err', 'resolve', 'reject'] }],
+			'@typescript-eslint/no-empty-function': 'error',
+			'@typescript-eslint/consistent-type-imports': 'error',
+			'@typescript-eslint/no-unused-vars': [
+				'warn',
+				{ argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+			],
+		},
+	},
+
+	{
+		files: ['deploy-commands.ts'],
+		languageOptions: {
+			parser: tsParser,
+			parserOptions: {
+				project: null,
+			},
+		},
+	},
+
+	// Declaration files: don't warn about unused vars/params in type defs
+	{
+		files: ['**/*.d.ts'],
+		rules: {
+			'no-unused-vars': 'off',
+			'@typescript-eslint/no-unused-vars': 'off',
 		},
 	},
 ];
